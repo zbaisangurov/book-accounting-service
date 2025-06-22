@@ -30,7 +30,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<BookResponse>> getAllBooks() {
-        log.info("Получен запрос на получение списка всех книг");
+        log.info("Получен запрос на выдачу списка всех книг");
         List<BookResponse> books = bookService.getAllBooks();
         log.info("Получение списка книг");
         return ResponseEntity.ok(books);
@@ -38,7 +38,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookResponse> getBookById(@PathVariable Long id) {
-        log.info("Получен запрос на получение данных о книге #" + id);
+        log.info("Получен запрос на выдачу данных о книге #" + id);
         Optional<BookResponse> bookResponse = bookService.getBookById(id);
         if (bookResponse.isPresent()) {
             return ResponseEntity.ok(bookResponse.get());
