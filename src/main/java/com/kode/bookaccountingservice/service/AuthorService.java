@@ -26,7 +26,7 @@ public class AuthorService {
     private final static Logger log = LoggerFactory.getLogger(AuthorService.class);
 
     @Transactional
-    public void createAuthor(AuthorRequest authorRequest){
+    public void addAuthor(AuthorRequest authorRequest){
         Author author = new Author();
         author.setName(authorRequest.getName());
         author.setBirthYear(authorRequest.getBirthYear());
