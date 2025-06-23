@@ -2,6 +2,8 @@ package com.kode.bookaccountingservice.service;
 
 import com.kode.bookaccountingservice.dto.AuthorRequest;
 import com.kode.bookaccountingservice.entity.Author;
+import com.kode.bookaccountingservice.exception.AuthorAlreadyExistsException;
+import com.kode.bookaccountingservice.exception.AuthorNotFoundException;
 import com.kode.bookaccountingservice.repository.AuthorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,11 @@ public class AuthorService {
      */
     @Transactional
     public void addAuthor(AuthorRequest authorRequest){
+        if (authorRepository.existsByName(authorRequest.getName())){
+            String message = "Автор с таким именем уже добавлен в базу";
+            log.error(message);
+            throw new AuthorAlreadyExistsException(message);
+        }
         Author author = new Author();
         author.setName(authorRequest.getName());
         author.setBirthYear(authorRequest.getBirthYear());
@@ -61,6 +68,11 @@ public class AuthorService {
      */
     @Transactional
     public Optional<Author> getAuthorById(@PathVariable Long id) {
+        if (!authorRepository.existsById(id)) {
+            String message = "Автор с ID " + id + " не найден";
+            log.error(message);
+            throw new AuthorNotFoundException(message);
+        }
         log.info("Поиск автора по указанному идентификатору");
         return authorRepository.findById(id);
     }

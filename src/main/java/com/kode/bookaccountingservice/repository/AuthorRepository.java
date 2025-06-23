@@ -7,4 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
+    boolean existsByName(String name);
 }

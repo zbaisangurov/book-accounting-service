@@ -38,7 +38,8 @@ public class AuthorController {
     @Operation(summary = "Добавить нового автора", description = "Добавляет автора на основе предоставленных данных")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Автор успешно добавлен"),
-            @ApiResponse(responseCode = "400", description = "Некорректные входные данные")
+            @ApiResponse(responseCode = "400", description = "Некорректные входные данные"),
+            @ApiResponse(responseCode = "409", description = "Автор с таким именем уже добавлен в базу")
     })
     public void addAuthor(@RequestBody AuthorRequest authorRequest) {
         log.info("Получен запрос на добавление данных о новом авторе");
