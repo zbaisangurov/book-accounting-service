@@ -4,6 +4,9 @@ import com.kode.bookaccountingservice.dto.BookRequest;
 import com.kode.bookaccountingservice.dto.BookResponse;
 import com.kode.bookaccountingservice.entity.Author;
 import com.kode.bookaccountingservice.entity.Book;
+import com.kode.bookaccountingservice.exception.AuthorNotFoundException;
+import com.kode.bookaccountingservice.exception.BookAlreadyExistsException;
+import com.kode.bookaccountingservice.exception.BookNotFoundException;
 import com.kode.bookaccountingservice.repository.AuthorRepository;
 import com.kode.bookaccountingservice.repository.BookRepository;
 import org.slf4j.Logger;
@@ -38,9 +41,14 @@ public class BookService {
      */
     @Transactional
     public void addBook(BookRequest bookRequest) {
+        if (bookRepository.existsByTitle(bookRequest.getTitle())){
+            String message = "Книга с таким наименованием уже добавлена в базу";
+            log.error(message);
+            throw new BookAlreadyExistsException(message);
+        }
         Author author = authorRepository.findById(bookRequest.getAuthorId())
                 .orElseThrow(() -> {
-                    return new IllegalArgumentException("Автор с указанным идентификатором не найден: " + bookRequest.getAuthorId());
+                   return new AuthorNotFoundException("Автор с ID" + bookRequest.getAuthorId() + " не найден: ");
                 });
         Book book = new Book();
         book.setTitle(bookRequest.getTitle());
@@ -70,6 +78,11 @@ public class BookService {
      */
     @Transactional
     public Optional<BookResponse> getBookById(Long id) {
+        if (!bookRepository.existsById(id)) {
+            String message = "Книга с ID " + id + " не найдена";
+            log.error(message);
+            throw new BookNotFoundException(message);
+        }
         log.info("Получение книги по идентификатору " + id);
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
@@ -91,15 +104,11 @@ public class BookService {
         log.info("Обновляются данные о книге #" + id);
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> {
-                    return new IllegalArgumentException("Книги с таким идентификатором не найдено");
-                });
-        Author author = authorRepository.findById(bookRequest.getAuthorId())
-                .orElseThrow(() -> {
-                    log.error("Автора с таким идентификатором не найдено");
-                    return new IllegalArgumentException("Автора с таким идентификатором не найдено");
+                    String message = "Книга с ID " + id + " не найдена";
+                    log.error(message);
+                    return new BookNotFoundException(message);
                 });
         book.setTitle(bookRequest.getTitle());
-        book.setAuthor(author);
         book.setYear(bookRequest.getYear());
         book.setGenre(bookRequest.getGenre());
         bookRepository.save(book);
@@ -115,7 +124,9 @@ public class BookService {
     public void deleteBook(Long id) {
         log.info("Удаление данных о книге #" + id);
         if (!bookRepository.existsById(id)) {
-            throw new IllegalArgumentException("Книги с таким идентификатором не найдено");
+            String message = "Книга с ID " + id + " не найдена";
+            log.error(message);
+            throw new BookNotFoundException(message);
         }
         bookRepository.deleteById(id);
         log.info("Данные о книге удалены");
