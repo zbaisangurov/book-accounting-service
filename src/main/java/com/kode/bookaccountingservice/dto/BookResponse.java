@@ -1,10 +1,20 @@
 package com.kode.bookaccountingservice.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * DTO для выдачи книг
+ */
 public class BookResponse {
+    @Schema(description = "ID книги", example = "1")
     private Long id;
+    @Schema(description = "Название книги", example = "Капитанская дочка")
     private String title;
+    @Schema(description = "ID автора книги", example = "1")
     private Long authorId;
+    @Schema(description = "Год публикации книги", example = "1836")
     private int year;
+    @Schema(description = "Жанр книги", example = "Исторический роман")
     private String genre;
 
     public Long getId() {

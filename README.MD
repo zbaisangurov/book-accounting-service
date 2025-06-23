@@ -1,8 +1,8 @@
 # Описание
 
 Целью тестового задания является создание REST API на Java для управления библиотекой.
-Проект реализован с использованием Spring Boot 3, база данных — PostgreSQL, сборщик — Apache
-Maven, язык — Java 17.
+Проект реализован с использованием Spring Boot 3, база данных — PostgreSQL 17.2, сборщик — Apache
+Maven 3.9.9, язык — Java 17.
 
 ## Функциональность сервиса (API-эндпоинты):
 
@@ -19,9 +19,9 @@ Maven, язык — Java 17.
 
 ## Перед запуском убедитесь, что установлены актуальные версии:
 
-* JDK
-* Apache Maven
-* PostgreSQL
+* JDK 17+
+* Apache Maven 3+
+* PostgreSQL 17
 * Git
 
 ## Для запуска приложения:
@@ -80,5 +80,11 @@ Maven, язык — Java 17.
 Swagger UI доступен по следующему адресу:
 
 ```aiignore
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/swagger.html
+```
+
+Файл OpenAPI JSON доступен по адресу:
+
+```aiignore
+http://localhost:8080/api-docs
 ```
