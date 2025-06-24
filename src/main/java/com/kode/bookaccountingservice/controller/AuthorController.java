@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class AuthorController {
             @ApiResponse(responseCode = "400", description = "Некорректные входные данные"),
             @ApiResponse(responseCode = "409", description = "Автор с таким именем уже добавлен в базу")
     })
-    public void addAuthor(@RequestBody AuthorRequest authorRequest) {
+    public void addAuthor(@Valid @RequestBody AuthorRequest authorRequest) {
         log.info("Получен запрос на добавление данных о новом авторе");
         authorService.addAuthor(authorRequest);
         ResponseEntity.ok("Автор добавлен");

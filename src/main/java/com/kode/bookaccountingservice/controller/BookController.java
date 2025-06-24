@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class BookController {
             @ApiResponse(responseCode = "400", description = "Некорректные входные данные"),
             @ApiResponse(responseCode = "409", description = "Книга с таким наименованием уже добавлена в базу")
     })
-    public void addBook(@RequestBody BookRequest bookRequest) {
+    public void addBook(@Valid @RequestBody BookRequest bookRequest) {
         log.info("Получен запрос на добавление данных о новой книге");
         bookService.addBook(bookRequest);
         ResponseEntity.ok("Книга успешно добавлена");
@@ -95,7 +96,7 @@ public class BookController {
             @ApiResponse(responseCode = "400", description = "Некорректные входные данные"),
             @ApiResponse(responseCode = "404", description = "Книги с таким ID нет в базе")
     })
-    public void updateBook(@PathVariable Long id, @RequestBody BookRequest bookRequest) {
+    public void updateBook(@PathVariable Long id,@Valid @RequestBody BookRequest bookRequest) {
         log.info("Получен запрос на обновление данных о книге #" + id);
         bookService.updateBook(id, bookRequest);
     }
